@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { supabase } from './supabaseClient';
 
@@ -33,7 +33,7 @@ function PostDetail() {
   // ==================== 这里是修改的核心部分 ====================
 
   // 1. 把 fetchComments 函数提取出来，定义在 useEffect 外面
-  const fetchComments = async () => {
+  const fetchComments = useCallback(async () => {
     try {
       const { error, data } = await supabase
         .from('comments')
@@ -48,12 +48,12 @@ function PostDetail() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [id]);
 
   // 2. 使用一个简化的 useEffect 来调用它
   useEffect(() => {
     fetchComments();
-  }, [id, fetchComments]);
+  }, [fetchComments]);
 
   // 提交新评论
   const handleCommentSubmit = async (e) => {
