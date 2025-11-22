@@ -20,7 +20,7 @@ function CreatePost() {
       // 同样，这里需要用户登录，暂时用一个固定的 user_id
       const userId = 'e8ba956d-a9f3-4bff-b673-60b783c1cf48'; // 替换成一个真实的 user_id
 
-      const { data, error } = await supabase
+      const { error } = await supabase
         .from('posts')
         .insert([
           { title: title, content: content, user_id: userId }

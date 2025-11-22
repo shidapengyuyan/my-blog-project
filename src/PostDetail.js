@@ -35,7 +35,7 @@ function PostDetail() {
   // 1. 把 fetchComments 函数提取出来，定义在 useEffect 外面
   const fetchComments = async () => {
     try {
-      const { data, error } = await supabase
+      const { error, data } = await supabase
         .from('comments')
         .select('*')
         .eq('post_id', id)
@@ -53,7 +53,7 @@ function PostDetail() {
   // 2. 使用一个简化的 useEffect 来调用它
   useEffect(() => {
     fetchComments();
-  }, [id]);
+  }, [id, fetchComments]);
 
   // 提交新评论
   const handleCommentSubmit = async (e) => {
@@ -63,7 +63,7 @@ function PostDetail() {
     try {
       const userId = 'e8ba956d-a9f3-4bff-b673-60b783c1cf48'; // 记得替换成真实的 user_id
 
-      const { data, error } = await supabase
+      const { error } = await supabase
         .from('comments')
         .insert([
           { content: newComment, post_id: id, user_id: userId }
